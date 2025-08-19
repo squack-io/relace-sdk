@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relace SDK UI Demo</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+      }
+      label {
+        display: block;
+        margin: 0.5rem 0 0.25rem;
+      }
+      input,
+      textarea,
+      select,
+      button {
+        font: inherit;
+        padding: 0.5rem;
+      }
+      .row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .log {
+        white-space: pre-wrap;
+        background: #111;
+        color: #0f0;
+        padding: 1rem;
+        min-height: 200px;
+        border-radius: 6px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Relace SDK UI Demo</h1>
+    <p>Set RELACE_API_KEY in your shell before starting this dev server.</p>
+
+    <div class="card">
+      <h2>Create Repo</h2>
+      <div class="row">
+        <label>Init From</label>
+        <select id="sourceType">
+          <option value="files" selected>Files</option>
+          <option value="git">Git</option>
+        </select>
+        <button id="createRepo">Create</button>
+      </div>
+      <div>
+        <label>Git URL</label>
+        <input
+          id="gitUrl"
+          placeholder="https://github.com/user/repo"
+          size="40"
+        />
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Run Agent</h2>
+      <div class="row">
+        <label>Agent Name</label>
+        <input id="agentName" value="default" />
+        <button id="runAgent">Run</button>
+      </div>
+      <div>
+        <label>Inputs (JSON)</label>
+        <textarea id="agentInputs" rows="4" cols="60">
+{ "goal": "Create hello.txt and greet" }</textarea
+        >
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Log</h2>
+      <div id="log" class="log"></div>
+    </div>
+
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>

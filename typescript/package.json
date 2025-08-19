@@ -1,0 +1,65 @@
+{
+  "name": "@relace-ai/agent-client",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "TypeScript client SDK for the Relace Agent API",
+  "author": "Relace AI",
+  "license": "ISC",
+  "homepage": "https://github.com/squack-io/relace-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/squack-io/relace-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/squack-io/relace-sdk/issues"
+  },
+  "keywords": [
+    "relace",
+    "sdk",
+    "openapi",
+    "client",
+    "typescript"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.prod.json",
+    "prepublishOnly": "pnpm run build",
+    "docs": "typedoc",
+    "test": "vitest --run",
+    "examples:basic": "node examples/01_basic_repo.mjs",
+    "examples:file": "node examples/02_file_ops.mjs",
+    "examples:update": "node examples/03_update_and_clone.mjs",
+    "examples:ai": "node examples/04_ai_interactions.mjs",
+    "examples:agent": "node examples/05_agent_stream_sse.mjs",
+    "dev:ui": "vite --config examples/ui/vite.config.ts"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.17.2",
+    "msw": "^2.10.5",
+    "typedoc": "^0.28.10",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.2",
+    "vitest": "^3.2.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

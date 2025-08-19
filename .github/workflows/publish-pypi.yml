@@ -1,0 +1,31 @@
+name: Publish Python SDK
+
+on:
+  push:
+    tags:
+      - 'python-sdk-v*'
+
+jobs:
+  publish:
+    name: Publish relace-agent-client
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - uses: astral-sh/setup-uv@v3
+
+      - name: Build
+        working-directory: python
+        run: uv build
+
+      - name: Publish to PyPI
+        working-directory: python
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: uv publish --token "$UV_PUBLISH_TOKEN"

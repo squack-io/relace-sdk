@@ -1,0 +1,7 @@
+packages:
+  - typescript
+  - python
+
+onlyBuiltDependencies:
+  - esbuild
+  - msw
