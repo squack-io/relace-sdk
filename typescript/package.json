@@ -1,7 +1,7 @@
 {
   "name": "@relace-ai/agent-client",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript client SDK for the Relace Agent API",
   "author": "Relace AI",
   "license": "ISC",
