@@ -11,7 +11,7 @@
     "lint:python": "uv tool run ruff check python --fix && uv tool run ruff format python",
     "lint:typescript": "oxlint --fix && prettier -w .",
     "lint": "pnpm run /lint:/",
-    "generate:typescript": "openapi-typescript openapi.json -o typescript/src/relace.schema.ts && sed -i '' 's/@description/@remarks/g' typescript/src/relace.schema.ts",
+    "generate:typescript": "openapi-typescript openapi.json -o typescript/src/relace.schema.ts && sed -i '' 's/@description/@remarks/g' typescript/src/relace.schema.ts && pnpm lint:typescript",
     "generate:python": "uvx openapi-python-client generate --path openapi.json --meta uv --output-path python --overwrite && pnpm lint:python"
   },
   "devDependencies": {
