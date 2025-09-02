@@ -57,7 +57,13 @@ describe('Repo CRUD integration', () => {
   }, 60_000)
 
   it('lists repos and includes the created repo', async () => {
-    const { data, error, response } = await client.GET('/repo', {})
+    const { data, error, response } = await client.GET('/repo', {
+      params: {
+        query: {
+          filter_metadata: JSON.stringify({ test_suite: 'repo.crud.int' }),
+        },
+      },
+    })
 
     expect(error).toBeUndefined()
     expect(response.status).toBe(200)
