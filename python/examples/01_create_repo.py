@@ -16,7 +16,7 @@ import os
 import sys
 
 from relace_agent_client import AuthenticatedClient
-from relace_agent_client.api.default import create_repo_repo_post
+from relace_agent_client.api.default import create_repo
 from relace_agent_client.models import (
     File as ModelFile,
 )
@@ -43,7 +43,7 @@ def create_from_files(client: AuthenticatedClient) -> None:
     ]
     req = RepoCreateRequest(source=RepoCreateFilesSource(type_="files", files=files))
     with client as c:
-        resp = create_repo_repo_post.sync_detailed(client=c, body=req)
+        resp = create_repo.sync_detailed(client=c, body=req)
     if isinstance(resp.parsed, RepoInfo):
         print("Created repo:", resp.parsed.repo_id, "head:", resp.parsed.repo_head)
     else:
@@ -53,7 +53,7 @@ def create_from_files(client: AuthenticatedClient) -> None:
 def create_from_git(client: AuthenticatedClient, url: str, branch: str | None) -> None:
     req = RepoCreateRequest(source=RepoCreateGitSource(type_="git", url=url, branch=branch))
     with client as c:
-        resp = create_repo_repo_post.sync_detailed(client=c, body=req)
+        resp = create_repo.sync_detailed(client=c, body=req)
     if isinstance(resp.parsed, RepoInfo):
         print("Created repo from git:", resp.parsed.repo_id, "head:", resp.parsed.repo_head)
     else:

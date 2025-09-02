@@ -14,8 +14,8 @@ from uuid import UUID
 
 from relace_agent_client import AuthenticatedClient
 from relace_agent_client.api.default import (
-    clone_repo_repo_repo_id_clone_get,
-    update_repo_contents_repo_repo_id_update_post,
+    clone_repo,
+    update_repo_contents,
 )
 from relace_agent_client.models import (
     File as ModelFile,
@@ -48,7 +48,7 @@ def update_files(repo_id: UUID) -> None:
         source=RepoUpdateFiles(type_="files", files=[ModelFile(filename="hello.txt", content="hi")])
     )
     with get_client() as c:
-        resp = update_repo_contents_repo_repo_id_update_post.sync_detailed(client=c, repo_id=repo_id, body=update)
+        resp = update_repo_contents.sync_detailed(client=c, repo_id=repo_id, body=update)
     if isinstance(resp.parsed, RepoInfo):
         print("Files updated, head:", resp.parsed.repo_head)
 
@@ -64,7 +64,7 @@ def update_diff(repo_id: UUID) -> None:
     )
     req = RepoUpdateRequest(source=ops)
     with get_client() as c:
-        resp = update_repo_contents_repo_repo_id_update_post.sync_detailed(client=c, repo_id=repo_id, body=req)
+        resp = update_repo_contents.sync_detailed(client=c, repo_id=repo_id, body=req)
     if isinstance(resp.parsed, RepoInfo):
         print("Diff applied, head:", resp.parsed.repo_head)
 
@@ -72,14 +72,14 @@ def update_diff(repo_id: UUID) -> None:
 def update_git(repo_id: UUID, url: str, branch: str | None = None) -> None:
     req = RepoUpdateRequest(source=RepoUpdateGit(type_="git", url=url, branch=branch))
     with get_client() as c:
-        resp = update_repo_contents_repo_repo_id_update_post.sync_detailed(client=c, repo_id=repo_id, body=req)
+        resp = update_repo_contents.sync_detailed(client=c, repo_id=repo_id, body=req)
     if isinstance(resp.parsed, RepoInfo):
         print("Git source applied, head:", resp.parsed.repo_head)
 
 
 def clone(repo_id: UUID) -> None:
     with get_client() as c:
-        resp = clone_repo_repo_repo_id_clone_get.sync_detailed(client=c, repo_id=repo_id)
+        resp = clone_repo.sync_detailed(client=c, repo_id=repo_id)
     if isinstance(resp.parsed, RepoCloneResponse):
         count = len(resp.parsed.files or [])
         print("Cloned files:", count)

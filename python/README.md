@@ -21,10 +21,10 @@ client = AuthenticatedClient(base_url=BASE_URL, token=API_KEY)
 - Use context managers for connection reuse:
 
 ```python
-from relace_agent_client.api.default import list_repo_metadata_repo_get
+from relace_agent_client.api.default import list_repo_metadata
 
 with client as c:
-    repos = list_repo_metadata_repo_get.sync(client=c)
+    repos = list_repo_metadata.sync(client=c)
     print(repos)
 ```
 
@@ -39,14 +39,14 @@ Notes
 Create from a Git URL:
 
 ```python
-from relace_agent_client.api.default import create_repo_repo_post
+from relace_agent_client.api.default import create_repo
 from relace_agent_client.models import RepoCreateRequest, RepoCreateGitSource
 
 with client as c:
     req = RepoCreateRequest(
         source=RepoCreateGitSource(type_="git", url="https://github.com/org/repo.git", branch="main")
     )
-    created = create_repo_repo_post.sync(client=c, body=req)
+    created = create_repo.sync(client=c, body=req)
     repo_id = created.repo_id
     print("Created repo:", repo_id, created.repo_head)
 ```
@@ -54,7 +54,7 @@ with client as c:
 Create from in-memory files:
 
 ```python
-from relace_agent_client.api.default import create_repo_repo_post
+from relace_agent_client.api.default import create_repo
 from relace_agent_client.models import RepoCreateRequest, RepoCreateFilesSource, File as ModelFile
 
 files = [
@@ -64,21 +64,21 @@ files = [
 
 with client as c:
     req = RepoCreateRequest(source=RepoCreateFilesSource(type_="files", files=files))
-    info = create_repo_repo_post.sync(client=c, body=req)
+    info = create_repo.sync(client=c, body=req)
     repo_id = info.repo_id
 ```
 
 ## List and get metadata
 
 ```python
-from relace_agent_client.api.default import list_repo_metadata_repo_get, get_repo_metadata_repo_repo_id_get
+from relace_agent_client.api.default import list_repo_metadata, get_repo_metadata
 
 with client as c:
-    page = list_repo_metadata_repo_get.sync(client=c)
+    page = list_repo_metadata.sync(client=c)
     for meta in (page.items or []):
         print(meta.repo_id, meta.created_at)
 
-    md = get_repo_metadata_repo_repo_id_get.sync(client=c, repo_id=repo_id)
+    md = get_repo_metadata.sync(client=c, repo_id=repo_id)
     print(md)
 ```
 
@@ -88,13 +88,13 @@ Upload/overwrite a file (auto-committed):
 
 ```python
 from io import BytesIO
-from relace_agent_client.api.default import upload_file_repo_repo_id_file_file_path_put
+from relace_agent_client.api.default import upload_file
 from relace_agent_client.types import File as UploadFile
 
 content = BytesIO(b"print('updated')\n")
 
 with client as c:
-    info = upload_file_repo_repo_id_file_file_path_put.sync(
+    info = upload_file.sync(
         client=c,
         repo_id=repo_id,
         file_path="src/app.py",
@@ -106,10 +106,10 @@ with client as c:
 Download a file:
 
 ```python
-from relace_agent_client.api.default import download_file_repo_repo_id_file_file_path_get
+from relace_agent_client.api.default import download_file
 
 with client as c:
-    data = download_file_repo_repo_id_file_file_path_get.sync(
+    data = download_file.sync(
         client=c, repo_id=repo_id, file_path="src/app.py"
     )
     print(data)
@@ -118,10 +118,10 @@ with client as c:
 Delete a file:
 
 ```python
-from relace_agent_client.api.default import delete_file_repo_repo_id_file_file_path_delete
+from relace_agent_client.api.default import delete_file
 
 with client as c:
-    info = delete_file_repo_repo_id_file_file_path_delete.sync(
+    info = delete_file.sync(
         client=c, repo_id=repo_id, file_path="README.md"
     )
     print(info.repo_head)
@@ -132,7 +132,7 @@ with client as c:
 Replace files in bulk:
 
 ```python
-from relace_agent_client.api.default import update_repo_contents_repo_repo_id_update_post
+from relace_agent_client.api.default import update_repo_contents
 from relace_agent_client.models import RepoUpdateRequest, RepoUpdateFiles, File as ModelFile
 
 update = RepoUpdateRequest(
@@ -140,14 +140,14 @@ update = RepoUpdateRequest(
 )
 
 with client as c:
-    info = update_repo_contents_repo_repo_id_update_post.sync(client=c, repo_id=repo_id, body=update)
+    info = update_repo_contents.sync(client=c, repo_id=repo_id, body=update)
 ```
 
 Apply a diff of operations:
 
 ```python
 from relace_agent_client.models import RepoUpdateRequest, RepoUpdateDiff, FileWriteOperation, FileRenameOperation, FileDeleteOperation
-from relace_agent_client.api.default import update_repo_contents_repo_repo_id_update_post
+from relace_agent_client.api.default import update_repo_contents
 
 ops = RepoUpdateDiff(
     type_="diff",
@@ -160,88 +160,42 @@ ops = RepoUpdateDiff(
 req = RepoUpdateRequest(source=ops)
 
 with client as c:
-    info = update_repo_contents_repo_repo_id_update_post.sync(client=c, repo_id=repo_id, body=req)
+    info = update_repo_contents.sync(client=c, repo_id=repo_id, body=req)
 ```
 
 Overwrite from a new Git source:
 
 ```python
 from relace_agent_client.models import RepoUpdateRequest, RepoUpdateGit
-from relace_agent_client.api.default import update_repo_contents_repo_repo_id_update_post
+from relace_agent_client.api.default import update_repo_contents
 
 req = RepoUpdateRequest(source=RepoUpdateGit(type_="git", url="https://github.com/org/another.git", branch="main"))
 
 with client as c:
-    info = update_repo_contents_repo_repo_id_update_post.sync(client=c, repo_id=repo_id, body=req)
+    info = update_repo_contents.sync(client=c, repo_id=repo_id, body=req)
 ```
 
 ## Clone repository (get all files)
 
 ```python
-from relace_agent_client.api.default import clone_repo_repo_repo_id_clone_get
+from relace_agent_client.api.default import clone_repo
 
 with client as c:
-    clone = clone_repo_repo_repo_id_clone_get.sync(client=c, repo_id=repo_id)
+    clone = clone_repo.sync(client=c, repo_id=repo_id)
     for f in (clone.files or []):
         print(f.filename, len(f.content))
 ```
 
-## Git-like operations
-
-Pull from remote:
-
-```python
-from relace_agent_client.api.default import pull_remote_repo_repo_id_pull_patch
-from relace_agent_client.models import RepoPullRequest
-
-with client as c:
-    info = pull_remote_repo_repo_id_pull_patch.sync(client=c, repo_id=repo_id, body=RepoPullRequest())
-    print(info.repo_head)
-```
-
-Checkout a specific commit:
-
-```python
-from relace_agent_client.api.default import checkout_commit_repo_repo_id_checkout_patch
-from relace_agent_client.models import RepoCheckoutRequest
-
-target_hash = "<commit-sha>"
-with client as c:
-    info = checkout_commit_repo_repo_id_checkout_patch.sync(
-        client=c, repo_id=repo_id, body=RepoCheckoutRequest(repo_head=target_hash)
-    )
-```
-
 ## AI interactions
-
-Run an agent (SSE events are emitted server-side during processing):
-
-```python
-from relace_agent_client.api.default import run_agent_repo_repo_id_agent_post
-from relace_agent_client.models import RepoAgentRequest, RepoAgentRequestAgentInputs
-
-inputs = RepoAgentRequestAgentInputs.from_dict({
-    "task": "Refactor utils and add unit tests",
-    "priority": "high",
-})
-
-with client as c:
-    result = run_agent_repo_repo_id_agent_post.sync(
-        client=c,
-        repo_id=repo_id,
-        body=RepoAgentRequest(agent_name="code_maintainer", agent_inputs=inputs),
-    )
-    print(result)
-```
 
 Ask a question about the repo:
 
 ```python
-from relace_agent_client.api.default import ask_question_repo_repo_id_ask_post
+from relace_agent_client.api.default import ask_question
 from relace_agent_client.models import RepoAskRequest
 
 with client as c:
-    res = ask_question_repo_repo_id_ask_post.sync(
+    res = ask_question.sync(
         client=c, repo_id=repo_id, body=RepoAskRequest(query="Where does the app start?")
     )
     print(res.answer)
@@ -250,11 +204,11 @@ with client as c:
 Retrieve relevant content:
 
 ```python
-from relace_agent_client.api.default import retrieve_relevant_content_repo_repo_id_retrieve_post
+from relace_agent_client.api.default import retrieve_relevant_content
 from relace_agent_client.models import RepoRetrieveRequest
 
 with client as c:
-    r = retrieve_relevant_content_repo_repo_id_retrieve_post.sync(
+    r = retrieve_relevant_content.sync(
         client=c,
         repo_id=repo_id,
         body=RepoRetrieveRequest(query="authentication logic", include_content=True, score_threshold=0.4),
@@ -263,23 +217,13 @@ with client as c:
         print(item.filename, item.score)
 ```
 
-View the chat/event log:
-
-```python
-from relace_agent_client.api.default import get_chat_log_repo_repo_id_chat_get
-
-with client as c:
-    page = get_chat_log_repo_repo_id_chat_get.sync(client=c, repo_id=repo_id)
-    print(page)
-```
-
 ## Delete a repository
 
 ```python
-from relace_agent_client.api.default import delete_repo_repo_repo_id_delete
+from relace_agent_client.api.default import delete_repo
 
 with client as c:
-    delete_repo_repo_repo_id_delete.sync(client=c, repo_id=repo_id)
+    delete_repo.sync(client=c, repo_id=repo_id)
 ```
 
 ## Async usage
@@ -289,11 +233,11 @@ Every endpoint has `asyncio` and `asyncio_detailed` variants:
 ```python
 import asyncio
 from relace_agent_client import AuthenticatedClient
-from relace_agent_client.api.default import list_repo_metadata_repo_get
+from relace_agent_client.api.default import list_repo_metadata
 
 async def main():
     async with AuthenticatedClient(base_url=BASE_URL, token=API_KEY) as c:
-        page = await list_repo_metadata_repo_get.asyncio(client=c)
+        page = await list_repo_metadata.asyncio(client=c)
         print(page)
 
 asyncio.run(main())
@@ -306,8 +250,7 @@ See runnable scripts in `python/examples/`:
 - `01_create_repo.py` — create from files or Git
 - `02_file_ops.py` — upload, download, delete
 - `03_update_and_clone.py` — bulk update (files/diff/git) and clone
-- `04_ai_interactions.py` — run agent, ask, retrieve
-- `05_chat_and_git.py` — chat log, pull, checkout
+- `04_ai_interactions.py` — ask, retrieve
 
 ## TLS/HTTPX customization
 

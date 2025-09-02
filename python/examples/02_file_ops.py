@@ -21,9 +21,9 @@ from uuid import UUID
 
 from relace_agent_client import AuthenticatedClient
 from relace_agent_client.api.default import (
-    delete_file_repo_repo_id_file_file_path_delete,
-    download_file_repo_repo_id_file_file_path_get,
-    upload_file_repo_repo_id_file_file_path_put,
+    delete_file,
+    download_file,
+    upload_file,
 )
 from relace_agent_client.models import RepoInfo
 from relace_agent_client.types import File as UploadFile
@@ -43,9 +43,7 @@ def cmd_upload(repo_id: UUID, local_path: str, repo_path: str) -> None:
     with open(local_path, "rb") as f:
         body = UploadFile(payload=BytesIO(f.read()), file_name=os.path.basename(local_path))
     with client() as c:
-        resp = upload_file_repo_repo_id_file_file_path_put.sync_detailed(
-            client=c, repo_id=repo_id, file_path=repo_path, body=body
-        )
+        resp = upload_file.sync_detailed(client=c, repo_id=repo_id, file_path=repo_path, body=body)
     if isinstance(resp.parsed, RepoInfo):
         print("Uploaded. New head:", resp.parsed.repo_head)
     else:
@@ -54,15 +52,13 @@ def cmd_upload(repo_id: UUID, local_path: str, repo_path: str) -> None:
 
 def cmd_download(repo_id: UUID, repo_path: str) -> None:
     with client() as c:
-        data = download_file_repo_repo_id_file_file_path_get.sync(client=c, repo_id=repo_id, file_path=repo_path)
+        data = download_file.sync(client=c, repo_id=repo_id, file_path=repo_path)
     print(data)
 
 
 def cmd_delete(repo_id: UUID, repo_path: str) -> None:
     with client() as c:
-        resp = delete_file_repo_repo_id_file_file_path_delete.sync_detailed(
-            client=c, repo_id=repo_id, file_path=repo_path
-        )
+        resp = delete_file.sync_detailed(client=c, repo_id=repo_id, file_path=repo_path)
     if isinstance(resp.parsed, RepoInfo):
         print("Deleted. New head:", resp.parsed.repo_head)
     else:

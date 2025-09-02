@@ -42,10 +42,6 @@ const client = createRelaceClient({ apiKey: import.meta.env.RELACE_API_KEY })
     console.log('Cloned files:')
     for (const f of clone?.files ?? [])
       console.log(`- ${f.filename} (${f.content.length} bytes)`)
-
-    // 3) Optionally pull or checkout
-    // await client.PATCH("/repo/{repo_id}/pull", { params: { path: { repo_id } }, body: { new_branch: null } });
-    // await client.PATCH("/repo/{repo_id}/checkout", { params: { path: { repo_id } }, body: { repo_head: created.repo_head } });
   } catch (e) {
     console.error(e)
     process.exit(1)
