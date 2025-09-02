@@ -1,8 +1,10 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="RepoAskRequest")
 
@@ -12,13 +14,21 @@ class RepoAskRequest:
     """
     Attributes:
         query (str):
+        rerank (Union[Unset, bool]):  Default: False.
+        token_limit (Union[Unset, int]):  Default: 32000.
     """
 
     query: str
+    rerank: Union[Unset, bool] = False
+    token_limit: Union[Unset, int] = 32000
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         query = self.query
+
+        rerank = self.rerank
+
+        token_limit = self.token_limit
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -27,6 +37,10 @@ class RepoAskRequest:
                 "query": query,
             }
         )
+        if rerank is not UNSET:
+            field_dict["rerank"] = rerank
+        if token_limit is not UNSET:
+            field_dict["token_limit"] = token_limit
 
         return field_dict
 
@@ -35,8 +49,14 @@ class RepoAskRequest:
         d = dict(src_dict)
         query = d.pop("query")
 
+        rerank = d.pop("rerank", UNSET)
+
+        token_limit = d.pop("token_limit", UNSET)
+
         repo_ask_request = cls(
             query=query,
+            rerank=rerank,
+            token_limit=token_limit,
         )
 
         repo_ask_request.additional_properties = d

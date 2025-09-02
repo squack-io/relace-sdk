@@ -10,7 +10,7 @@
       "post": {
         "summary": "Create Repo",
         "description": "Create a new repository from the provided template.",
-        "operationId": "create_repo_repo_post",
+        "operationId": "create_repo",
         "security": [
           {
             "HTTPBearer": []
@@ -60,7 +60,7 @@
       "get": {
         "summary": "List Repo Metadata",
         "description": "Get metadata for all repositories owned by the user.",
-        "operationId": "list_repo_metadata_repo_get",
+        "operationId": "list_repo_metadata",
         "security": [
           {
             "HTTPBearer": []
@@ -190,7 +190,7 @@
       "get": {
         "summary": "Get Repo Metadata",
         "description": "Get metadata for a single repository.",
-        "operationId": "get_repo_metadata_repo__repo_id__get",
+        "operationId": "get_repo_metadata",
         "security": [
           {
             "HTTPBearer": []
@@ -234,7 +234,7 @@
       "delete": {
         "summary": "Delete Repo",
         "description": "Delete a repository and its associated data.",
-        "operationId": "delete_repo_repo__repo_id__delete",
+        "operationId": "delete_repo",
         "security": [
           {
             "HTTPBearer": []
@@ -273,7 +273,7 @@
       "post": {
         "summary": "Update Repo Contents",
         "description": "Update the contents of a repository.",
-        "operationId": "update_repo_contents_repo__repo_id__update_post",
+        "operationId": "update_repo_contents",
         "security": [
           {
             "HTTPBearer": []
@@ -329,7 +329,7 @@
       "put": {
         "summary": "Upload File",
         "description": "Write a file to a repository.\n\nAutomatically commits the change and returns the repo info with the updated head.",
-        "operationId": "upload_file_repo__repo_id__file__file_path__put",
+        "operationId": "upload_file",
         "security": [
           {
             "HTTPBearer": []
@@ -403,7 +403,7 @@
       "get": {
         "summary": "Download File",
         "description": "Read a file from a repository.",
-        "operationId": "download_file_repo__repo_id__file__file_path__get",
+        "operationId": "download_file",
         "security": [
           {
             "HTTPBearer": []
@@ -454,7 +454,7 @@
       "delete": {
         "summary": "Delete File",
         "description": "Delete a file from a repository.\n\nAutomatically commits the change and returns the repo info with the updated head.",
-        "operationId": "delete_file_repo__repo_id__file__file_path__delete",
+        "operationId": "delete_file",
         "security": [
           {
             "HTTPBearer": []
@@ -505,327 +505,11 @@
         }
       }
     },
-    "/repo/{repo_id}/pull": {
-      "patch": {
-        "summary": "Pull Remote",
-        "description": "Pull changes from the remote repository and merge into the current branch.",
-        "operationId": "pull_remote_repo__repo_id__pull_patch",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "repo_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Repo UUID"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RepoPullRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepoInfo"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/repo/{repo_id}/checkout": {
-      "patch": {
-        "summary": "Checkout Commit",
-        "description": "Checkout a particular commit hash.\n\nReturns the repo info with the updated head.",
-        "operationId": "checkout_commit_repo__repo_id__checkout_patch",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "repo_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Repo UUID"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RepoCheckoutRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepoInfo"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/repo/{repo_id}/site": {
-      "get": {
-        "summary": "Visit Deployed Site",
-        "operationId": "visit_deployed_site_repo__repo_id__site_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "repo_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Repo UUID"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/repo/{repo_id}/agent": {
-      "post": {
-        "summary": "Run Agent",
-        "description": "Run a user defined agent from the template repo configuration.\n\nUpdates (e.g. agent outputs) are surfaced in real time as Server-Sent Events.",
-        "operationId": "run_agent_repo__repo_id__agent_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "repo_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Repo UUID"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RepoAgentRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/repo/{repo_id}/chat": {
-      "get": {
-        "summary": "Get Chat Log",
-        "description": "Retrieve the event log for a repository, including user prompts.",
-        "operationId": "get_chat_log_repo__repo_id__chat_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "repo_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Repo UUID"
-            }
-          },
-          {
-            "name": "created_after",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Created After"
-            }
-          },
-          {
-            "name": "created_before",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Created Before"
-            }
-          },
-          {
-            "name": "page_start",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Page start index",
-              "default": 0,
-              "title": "Page Start"
-            },
-            "description": "Page start index"
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "description": "Maximum results per page",
-              "default": 100,
-              "title": "Page Size"
-            },
-            "description": "Maximum results per page"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedResponse_RepoLogItem_"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/repo/{repo_id}/retrieve": {
       "post": {
         "summary": "Retrieve Relevant Content",
         "description": "Retrieve relevant content from a repository based on a query.",
-        "operationId": "retrieve_relevant_content_repo__repo_id__retrieve_post",
+        "operationId": "retrieve_relevant_content",
         "security": [
           {
             "HTTPBearer": []
@@ -881,7 +565,7 @@
       "post": {
         "summary": "Ask Question",
         "description": "Ask a question about the repository and receive a natural language response.",
-        "operationId": "ask_question_repo__repo_id__ask_post",
+        "operationId": "ask_question",
         "security": [
           {
             "HTTPBearer": []
@@ -937,7 +621,7 @@
       "get": {
         "summary": "Clone Repo",
         "description": "Return all readable tracked files in a repository.\n\nIf a `commit` is provided, read file contents from that commit; otherwise\nread from the working directory.",
-        "operationId": "clone_repo_repo__repo_id__clone_get",
+        "operationId": "clone_repo",
         "security": [
           {
             "HTTPBearer": []
@@ -969,16 +653,6 @@
               ],
               "title": "Commit"
             }
-          },
-          {
-            "name": "as_bundle",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false,
-              "title": "As Bundle"
-            }
           }
         ],
         "responses": {
@@ -1008,60 +682,6 @@
   },
   "components": {
     "schemas": {
-      "AgentEvent": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "content": {
-            "type": "string",
-            "title": "Content"
-          }
-        },
-        "type": "object",
-        "required": ["name", "content"],
-        "title": "AgentEvent"
-      },
-      "BuildEvent": {
-        "properties": {
-          "event": {
-            "type": "string",
-            "enum": ["start", "pass", "fail"],
-            "title": "Event"
-          }
-        },
-        "type": "object",
-        "required": ["event"],
-        "title": "BuildEvent"
-      },
-      "CommittedEvent": {
-        "properties": {
-          "repo_head": {
-            "type": "string",
-            "title": "Repo Head"
-          }
-        },
-        "type": "object",
-        "required": ["repo_head"],
-        "title": "CommittedEvent"
-      },
-      "DeployedEvent": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "title": "Url"
-          }
-        },
-        "type": "object",
-        "required": ["url"],
-        "title": "DeployedEvent"
-      },
-      "DoneEvent": {
-        "properties": {},
-        "type": "object",
-        "title": "DoneEvent"
-      },
       "File": {
         "properties": {
           "filename": {
@@ -1151,35 +771,6 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
-      "PagedResponse_RepoLogItem_": {
-        "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/RepoLogItem"
-            },
-            "type": "array",
-            "title": "Items"
-          },
-          "total_items": {
-            "type": "integer",
-            "title": "Total Items"
-          },
-          "next_page": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Next Page"
-          }
-        },
-        "type": "object",
-        "required": ["items", "total_items"],
-        "title": "PagedResponse[RepoLogItem]"
-      },
       "PagedResponse_RepoMetadata_": {
         "properties": {
           "items": {
@@ -1209,52 +800,22 @@
         "required": ["items", "total_items"],
         "title": "PagedResponse[RepoMetadata]"
       },
-      "PromptErrorEvent": {
-        "properties": {
-          "error": {
-            "type": "string",
-            "title": "Error"
-          }
-        },
-        "type": "object",
-        "required": ["error"],
-        "title": "PromptErrorEvent"
-      },
-      "RepoAgentRequest": {
-        "properties": {
-          "agent_name": {
-            "type": "string",
-            "title": "Agent Name"
-          },
-          "agent_inputs": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "type": "object",
-            "title": "Agent Inputs"
-          },
-          "overrides": {
-            "anyOf": [
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Overrides"
-          }
-        },
-        "type": "object",
-        "required": ["agent_name", "agent_inputs"],
-        "title": "RepoAgentRequest"
-      },
       "RepoAskRequest": {
         "properties": {
           "query": {
             "type": "string",
             "title": "Query"
+          },
+          "rerank": {
+            "type": "boolean",
+            "title": "Rerank",
+            "default": false
+          },
+          "token_limit": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Token Limit",
+            "default": 32000
           }
         },
         "type": "object",
@@ -1271,17 +832,6 @@
         "type": "object",
         "required": ["answer"],
         "title": "RepoAskResponse"
-      },
-      "RepoCheckoutRequest": {
-        "properties": {
-          "repo_head": {
-            "type": "string",
-            "title": "Repo Head"
-          }
-        },
-        "type": "object",
-        "required": ["repo_head"],
-        "title": "RepoCheckoutRequest"
       },
       "RepoCloneResponse": {
         "properties": {
@@ -1410,6 +960,33 @@
         "type": "object",
         "title": "RepoCreateLegacyRequest"
       },
+      "RepoCreateRelaceSource": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "relace",
+            "title": "Type"
+          },
+          "repo_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Repo Id"
+          },
+          "copy_metadata": {
+            "type": "boolean",
+            "title": "Copy Metadata",
+            "default": false
+          },
+          "copy_remote": {
+            "type": "boolean",
+            "title": "Copy Remote",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": ["type", "repo_id"],
+        "title": "RepoCreateRelaceSource"
+      },
       "RepoCreateRequest": {
         "properties": {
           "source": {
@@ -1421,13 +998,17 @@
                   },
                   {
                     "$ref": "#/components/schemas/RepoCreateFilesSource"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RepoCreateRelaceSource"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "type",
                   "mapping": {
                     "files": "#/components/schemas/RepoCreateFilesSource",
-                    "git": "#/components/schemas/RepoCreateGitSource"
+                    "git": "#/components/schemas/RepoCreateGitSource",
+                    "relace": "#/components/schemas/RepoCreateRelaceSource"
                   }
                 }
               },
@@ -1470,69 +1051,6 @@
         "type": "object",
         "required": ["repo_id", "repo_head"],
         "title": "RepoInfo"
-      },
-      "RepoLogItem": {
-        "properties": {
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Timestamp"
-          },
-          "event_type": {
-            "type": "string",
-            "enum": [
-              "user_prompt",
-              "prompt_error",
-              "started",
-              "agent",
-              "tool",
-              "committed",
-              "build",
-              "test",
-              "deployed",
-              "done"
-            ],
-            "title": "Event Type"
-          },
-          "event": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RepoAgentRequest"
-              },
-              {
-                "$ref": "#/components/schemas/PromptErrorEvent"
-              },
-              {
-                "$ref": "#/components/schemas/StartedEvent"
-              },
-              {
-                "$ref": "#/components/schemas/AgentEvent"
-              },
-              {
-                "$ref": "#/components/schemas/ToolEvent"
-              },
-              {
-                "$ref": "#/components/schemas/CommittedEvent"
-              },
-              {
-                "$ref": "#/components/schemas/BuildEvent"
-              },
-              {
-                "$ref": "#/components/schemas/TestEvent"
-              },
-              {
-                "$ref": "#/components/schemas/DeployedEvent"
-              },
-              {
-                "$ref": "#/components/schemas/DoneEvent"
-              }
-            ],
-            "title": "Event"
-          }
-        },
-        "type": "object",
-        "required": ["timestamp", "event_type", "event"],
-        "title": "RepoLogItem"
       },
       "RepoMetadata": {
         "properties": {
@@ -1577,44 +1095,22 @@
         "required": ["repo_id", "created_at"],
         "title": "RepoMetadata"
       },
-      "RepoPullRequest": {
-        "properties": {
-          "new_branch": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "New Branch"
-          }
-        },
-        "type": "object",
-        "title": "RepoPullRequest"
-      },
       "RepoRetrieveRequest": {
         "properties": {
           "query": {
             "type": "string",
             "title": "Query"
           },
-          "filter": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Filter"
-          },
           "include_content": {
             "type": "boolean",
             "title": "Include Content",
             "default": false
+          },
+          "token_limit": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Token Limit",
+            "default": 32000
           },
           "score_threshold": {
             "type": "number",
@@ -1623,11 +1119,10 @@
             "title": "Score Threshold",
             "default": 0.3
           },
-          "token_limit": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Token Limit",
-            "default": 30000
+          "rerank": {
+            "type": "boolean",
+            "title": "Rerank",
+            "default": true
           }
         },
         "type": "object",
@@ -1788,52 +1283,6 @@
         "type": "object",
         "required": ["source"],
         "title": "RepoUpdateRequest"
-      },
-      "StartedEvent": {
-        "properties": {
-          "prompt_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Prompt Id"
-          }
-        },
-        "type": "object",
-        "required": ["prompt_id"],
-        "title": "StartedEvent"
-      },
-      "TestEvent": {
-        "properties": {
-          "event": {
-            "type": "string",
-            "enum": ["start", "pass", "fail"],
-            "title": "Event"
-          }
-        },
-        "type": "object",
-        "required": ["event"],
-        "title": "TestEvent"
-      },
-      "ToolEvent": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Path"
-          }
-        },
-        "type": "object",
-        "required": ["name"],
-        "title": "ToolEvent"
       },
       "ValidationError": {
         "properties": {

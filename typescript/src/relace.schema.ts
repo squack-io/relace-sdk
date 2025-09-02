@@ -15,13 +15,13 @@ export interface paths {
      * List Repo Metadata
      * @remarks Get metadata for all repositories owned by the user.
      */
-    get: operations['list_repo_metadata_repo_get']
+    get: operations['list_repo_metadata']
     put?: never
     /**
      * Create Repo
      * @remarks Create a new repository from the provided template.
      */
-    post: operations['create_repo_repo_post']
+    post: operations['create_repo']
     delete?: never
     options?: never
     head?: never
@@ -39,14 +39,14 @@ export interface paths {
      * Get Repo Metadata
      * @remarks Get metadata for a single repository.
      */
-    get: operations['get_repo_metadata_repo__repo_id__get']
+    get: operations['get_repo_metadata']
     put?: never
     post?: never
     /**
      * Delete Repo
      * @remarks Delete a repository and its associated data.
      */
-    delete: operations['delete_repo_repo__repo_id__delete']
+    delete: operations['delete_repo']
     options?: never
     head?: never
     patch?: never
@@ -65,7 +65,7 @@ export interface paths {
      * Update Repo Contents
      * @remarks Update the contents of a repository.
      */
-    post: operations['update_repo_contents_repo__repo_id__update_post']
+    post: operations['update_repo_contents']
     delete?: never
     options?: never
     head?: never
@@ -83,14 +83,14 @@ export interface paths {
      * Download File
      * @remarks Read a file from a repository.
      */
-    get: operations['download_file_repo__repo_id__file__file_path__get']
+    get: operations['download_file']
     /**
      * Upload File
      * @remarks Write a file to a repository.
      *
      *     Automatically commits the change and returns the repo info with the updated head.
      */
-    put: operations['upload_file_repo__repo_id__file__file_path__put']
+    put: operations['upload_file']
     post?: never
     /**
      * Delete File
@@ -98,108 +98,7 @@ export interface paths {
      *
      *     Automatically commits the change and returns the repo info with the updated head.
      */
-    delete: operations['delete_file_repo__repo_id__file__file_path__delete']
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/repo/{repo_id}/pull': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /**
-     * Pull Remote
-     * @remarks Pull changes from the remote repository and merge into the current branch.
-     */
-    patch: operations['pull_remote_repo__repo_id__pull_patch']
-    trace?: never
-  }
-  '/repo/{repo_id}/checkout': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /**
-     * Checkout Commit
-     * @remarks Checkout a particular commit hash.
-     *
-     *     Returns the repo info with the updated head.
-     */
-    patch: operations['checkout_commit_repo__repo_id__checkout_patch']
-    trace?: never
-  }
-  '/repo/{repo_id}/site': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** Visit Deployed Site */
-    get: operations['visit_deployed_site_repo__repo_id__site_get']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/repo/{repo_id}/agent': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Run Agent
-     * @remarks Run a user defined agent from the template repo configuration.
-     *
-     *     Updates (e.g. agent outputs) are surfaced in real time as Server-Sent Events.
-     */
-    post: operations['run_agent_repo__repo_id__agent_post']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/repo/{repo_id}/chat': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Get Chat Log
-     * @remarks Retrieve the event log for a repository, including user prompts.
-     */
-    get: operations['get_chat_log_repo__repo_id__chat_get']
-    put?: never
-    post?: never
-    delete?: never
+    delete: operations['delete_file']
     options?: never
     head?: never
     patch?: never
@@ -218,7 +117,7 @@ export interface paths {
      * Retrieve Relevant Content
      * @remarks Retrieve relevant content from a repository based on a query.
      */
-    post: operations['retrieve_relevant_content_repo__repo_id__retrieve_post']
+    post: operations['retrieve_relevant_content']
     delete?: never
     options?: never
     head?: never
@@ -238,7 +137,7 @@ export interface paths {
      * Ask Question
      * @remarks Ask a question about the repository and receive a natural language response.
      */
-    post: operations['ask_question_repo__repo_id__ask_post']
+    post: operations['ask_question']
     delete?: never
     options?: never
     head?: never
@@ -259,7 +158,7 @@ export interface paths {
      *     If a `commit` is provided, read file contents from that commit; otherwise
      *     read from the working directory.
      */
-    get: operations['clone_repo_repo__repo_id__clone_get']
+    get: operations['clone_repo']
     put?: never
     post?: never
     delete?: never
@@ -272,33 +171,6 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    /** AgentEvent */
-    AgentEvent: {
-      /** Name */
-      name: string
-      /** Content */
-      content: string
-    }
-    /** BuildEvent */
-    BuildEvent: {
-      /**
-       * Event
-       * @enum {string}
-       */
-      event: 'start' | 'pass' | 'fail'
-    }
-    /** CommittedEvent */
-    CommittedEvent: {
-      /** Repo Head */
-      repo_head: string
-    }
-    /** DeployedEvent */
-    DeployedEvent: {
-      /** Url */
-      url: string
-    }
-    /** DoneEvent */
-    DoneEvent: Record<string, never>
     /** File */
     File: {
       /**
@@ -360,15 +232,6 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][]
     }
-    /** PagedResponse[RepoLogItem] */
-    PagedResponse_RepoLogItem_: {
-      /** Items */
-      items: components['schemas']['RepoLogItem'][]
-      /** Total Items */
-      total_items: number
-      /** Next Page */
-      next_page?: number | null
-    }
     /** PagedResponse[RepoMetadata] */
     PagedResponse_RepoMetadata_: {
       /** Items */
@@ -378,38 +241,25 @@ export interface components {
       /** Next Page */
       next_page?: number | null
     }
-    /** PromptErrorEvent */
-    PromptErrorEvent: {
-      /** Error */
-      error: string
-    }
-    /** RepoAgentRequest */
-    RepoAgentRequest: {
-      /** Agent Name */
-      agent_name: string
-      /** Agent Inputs */
-      agent_inputs: {
-        [key: string]: string
-      }
-      /** Overrides */
-      overrides?: {
-        [key: string]: unknown
-      } | null
-    }
     /** RepoAskRequest */
     RepoAskRequest: {
       /** Query */
       query: string
+      /**
+       * Rerank
+       * @default false
+       */
+      rerank: boolean
+      /**
+       * Token Limit
+       * @default 32000
+       */
+      token_limit: number
     }
     /** RepoAskResponse */
     RepoAskResponse: {
       /** Answer */
       answer: string
-    }
-    /** RepoCheckoutRequest */
-    RepoCheckoutRequest: {
-      /** Repo Head */
-      repo_head: string
     }
     /**
      * RepoCloneResponse
@@ -473,6 +323,29 @@ export interface components {
        */
       description?: string | null
     }
+    /** RepoCreateRelaceSource */
+    RepoCreateRelaceSource: {
+      /**
+       * @remarks discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      type: 'relace'
+      /**
+       * Repo Id
+       * Format: uuid
+       */
+      repo_id: string
+      /**
+       * Copy Metadata
+       * @default false
+       */
+      copy_metadata: boolean
+      /**
+       * Copy Remote
+       * @default false
+       */
+      copy_remote: boolean
+    }
     /** RepoCreateRequest */
     RepoCreateRequest: {
       /** Source */
@@ -480,6 +353,7 @@ export interface components {
         | (
             | components['schemas']['RepoCreateGitSource']
             | components['schemas']['RepoCreateFilesSource']
+            | components['schemas']['RepoCreateRelaceSource']
           )
         | null
       /** Metadata */
@@ -496,41 +370,6 @@ export interface components {
       repo_id: string
       /** Repo Head */
       repo_head: string
-    }
-    /** RepoLogItem */
-    RepoLogItem: {
-      /**
-       * Timestamp
-       * Format: date-time
-       */
-      timestamp: string
-      /**
-       * Event Type
-       * @enum {string}
-       */
-      event_type:
-        | 'user_prompt'
-        | 'prompt_error'
-        | 'started'
-        | 'agent'
-        | 'tool'
-        | 'committed'
-        | 'build'
-        | 'test'
-        | 'deployed'
-        | 'done'
-      /** Event */
-      event:
-        | components['schemas']['RepoAgentRequest']
-        | components['schemas']['PromptErrorEvent']
-        | components['schemas']['StartedEvent']
-        | components['schemas']['AgentEvent']
-        | components['schemas']['ToolEvent']
-        | components['schemas']['CommittedEvent']
-        | components['schemas']['BuildEvent']
-        | components['schemas']['TestEvent']
-        | components['schemas']['DeployedEvent']
-        | components['schemas']['DoneEvent']
     }
     /** RepoMetadata */
     RepoMetadata: {
@@ -551,32 +390,30 @@ export interface components {
         [key: string]: string
       } | null
     }
-    /** RepoPullRequest */
-    RepoPullRequest: {
-      /** New Branch */
-      new_branch?: string | null
-    }
     /** RepoRetrieveRequest */
     RepoRetrieveRequest: {
       /** Query */
       query: string
-      /** Filter */
-      filter?: string | null
       /**
        * Include Content
        * @default false
        */
       include_content: boolean
       /**
+       * Token Limit
+       * @default 32000
+       */
+      token_limit: number
+      /**
        * Score Threshold
        * @default 0.3
        */
       score_threshold: number
       /**
-       * Token Limit
-       * @default 30000
+       * Rerank
+       * @default true
        */
-      token_limit: number
+      rerank: boolean
     }
     /** RepoRetrieveResponse */
     RepoRetrieveResponse: {
@@ -639,29 +476,6 @@ export interface components {
         | components['schemas']['RepoUpdateDiff']
         | components['schemas']['RepoUpdateGit']
     }
-    /** StartedEvent */
-    StartedEvent: {
-      /**
-       * Prompt Id
-       * Format: uuid
-       */
-      prompt_id: string
-    }
-    /** TestEvent */
-    TestEvent: {
-      /**
-       * Event
-       * @enum {string}
-       */
-      event: 'start' | 'pass' | 'fail'
-    }
-    /** ToolEvent */
-    ToolEvent: {
-      /** Name */
-      name: string
-      /** Path */
-      path?: string | null
-    }
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -680,7 +494,7 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
-  list_repo_metadata_repo_get: {
+  list_repo_metadata: {
     parameters: {
       query?: {
         filter_metadata?: string | null
@@ -717,7 +531,7 @@ export interface operations {
       }
     }
   }
-  create_repo_repo_post: {
+  create_repo: {
     parameters: {
       query?: never
       header?: never
@@ -752,7 +566,7 @@ export interface operations {
       }
     }
   }
-  get_repo_metadata_repo__repo_id__get: {
+  get_repo_metadata: {
     parameters: {
       query?: never
       header?: never
@@ -783,7 +597,7 @@ export interface operations {
       }
     }
   }
-  delete_repo_repo__repo_id__delete: {
+  delete_repo: {
     parameters: {
       query?: never
       header?: never
@@ -812,7 +626,7 @@ export interface operations {
       }
     }
   }
-  update_repo_contents_repo__repo_id__update_post: {
+  update_repo_contents: {
     parameters: {
       query?: never
       header?: never
@@ -847,7 +661,7 @@ export interface operations {
       }
     }
   }
-  download_file_repo__repo_id__file__file_path__get: {
+  download_file: {
     parameters: {
       query?: never
       header?: never
@@ -879,7 +693,7 @@ export interface operations {
       }
     }
   }
-  upload_file_repo__repo_id__file__file_path__put: {
+  upload_file: {
     parameters: {
       query?: never
       header?: never
@@ -924,7 +738,7 @@ export interface operations {
       }
     }
   }
-  delete_file_repo__repo_id__file__file_path__delete: {
+  delete_file: {
     parameters: {
       query?: never
       header?: never
@@ -956,181 +770,7 @@ export interface operations {
       }
     }
   }
-  pull_remote_repo__repo_id__pull_patch: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        repo_id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RepoPullRequest']
-      }
-    }
-    responses: {
-      /** @remarks Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['RepoInfo']
-        }
-      }
-      /** @remarks Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  checkout_commit_repo__repo_id__checkout_patch: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        repo_id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RepoCheckoutRequest']
-      }
-    }
-    responses: {
-      /** @remarks Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['RepoInfo']
-        }
-      }
-      /** @remarks Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  visit_deployed_site_repo__repo_id__site_get: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        repo_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @remarks Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': unknown
-        }
-      }
-      /** @remarks Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  run_agent_repo__repo_id__agent_post: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        repo_id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RepoAgentRequest']
-      }
-    }
-    responses: {
-      /** @remarks Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': unknown
-        }
-      }
-      /** @remarks Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  get_chat_log_repo__repo_id__chat_get: {
-    parameters: {
-      query?: {
-        created_after?: string | null
-        created_before?: string | null
-        /** @remarks Page start index */
-        page_start?: number
-        /** @remarks Maximum results per page */
-        page_size?: number
-      }
-      header?: never
-      path: {
-        repo_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @remarks Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['PagedResponse_RepoLogItem_']
-        }
-      }
-      /** @remarks Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  retrieve_relevant_content_repo__repo_id__retrieve_post: {
+  retrieve_relevant_content: {
     parameters: {
       query?: never
       header?: never
@@ -1165,7 +805,7 @@ export interface operations {
       }
     }
   }
-  ask_question_repo__repo_id__ask_post: {
+  ask_question: {
     parameters: {
       query?: never
       header?: never
@@ -1200,11 +840,10 @@ export interface operations {
       }
     }
   }
-  clone_repo_repo__repo_id__clone_get: {
+  clone_repo: {
     parameters: {
       query?: {
         commit?: string | null
-        as_bundle?: boolean
       }
       header?: never
       path: {
