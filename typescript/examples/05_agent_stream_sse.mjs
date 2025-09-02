@@ -22,7 +22,7 @@ async function runAgentStream(repo_id, body) {
         Accept: 'text/event-stream',
       },
       body: JSON.stringify(body),
-    }
+    },
   )
   if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`)
 

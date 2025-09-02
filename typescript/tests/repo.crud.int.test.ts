@@ -1,5 +1,5 @@
-import { afterAll, describe, expect, it } from "vitest"
-import createRelaceClient from "../src"
+import { afterAll, describe, expect, it } from 'vitest'
+import createRelaceClient from '../src'
 
 describe('Repo CRUD integration', () => {
   const client = createRelaceClient({ apiKey: import.meta.env.RELACE_API_KEY })

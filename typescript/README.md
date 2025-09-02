@@ -15,15 +15,15 @@ yarn add @relace-ai/typescript-sdk
 ## Usage
 
 ```ts
-import { createRelaceClient } from "@relace-ai/typescript-sdk"
+import { createRelaceClient } from '@relace-ai/typescript-sdk'
 
 const client = createRelaceClient({
-  baseUrl: "https://api.relace.ai",
+  baseUrl: 'https://api.relace.ai',
   apiKey: process.env.RELACE_API_KEY!,
 })
 
 // Example: list repos
-const res = await client.GET("/repo")
+const res = await client.GET('/repo')
 if (res.error) throw new Error(JSON.stringify(res.error))
 console.log(res.data)
 ```

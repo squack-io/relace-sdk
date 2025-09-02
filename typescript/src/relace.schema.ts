@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-  "/repo": {
+  '/repo': {
     parameters: {
       query?: never
       header?: never
@@ -15,20 +15,20 @@ export interface paths {
      * List Repo Metadata
      * @remarks Get metadata for all repositories owned by the user.
      */
-    get: operations["list_repo_metadata_repo_get"]
+    get: operations['list_repo_metadata_repo_get']
     put?: never
     /**
      * Create Repo
      * @remarks Create a new repository from the provided template.
      */
-    post: operations["create_repo_repo_post"]
+    post: operations['create_repo_repo_post']
     delete?: never
     options?: never
     head?: never
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}": {
+  '/repo/{repo_id}': {
     parameters: {
       query?: never
       header?: never
@@ -39,20 +39,20 @@ export interface paths {
      * Get Repo Metadata
      * @remarks Get metadata for a single repository.
      */
-    get: operations["get_repo_metadata_repo__repo_id__get"]
+    get: operations['get_repo_metadata_repo__repo_id__get']
     put?: never
     post?: never
     /**
      * Delete Repo
      * @remarks Delete a repository and its associated data.
      */
-    delete: operations["delete_repo_repo__repo_id__delete"]
+    delete: operations['delete_repo_repo__repo_id__delete']
     options?: never
     head?: never
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/update": {
+  '/repo/{repo_id}/update': {
     parameters: {
       query?: never
       header?: never
@@ -65,14 +65,14 @@ export interface paths {
      * Update Repo Contents
      * @remarks Update the contents of a repository.
      */
-    post: operations["update_repo_contents_repo__repo_id__update_post"]
+    post: operations['update_repo_contents_repo__repo_id__update_post']
     delete?: never
     options?: never
     head?: never
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/file/{file_path}": {
+  '/repo/{repo_id}/file/{file_path}': {
     parameters: {
       query?: never
       header?: never
@@ -83,14 +83,14 @@ export interface paths {
      * Download File
      * @remarks Read a file from a repository.
      */
-    get: operations["download_file_repo__repo_id__file__file_path__get"]
+    get: operations['download_file_repo__repo_id__file__file_path__get']
     /**
      * Upload File
      * @remarks Write a file to a repository.
      *
      *     Automatically commits the change and returns the repo info with the updated head.
      */
-    put: operations["upload_file_repo__repo_id__file__file_path__put"]
+    put: operations['upload_file_repo__repo_id__file__file_path__put']
     post?: never
     /**
      * Delete File
@@ -98,13 +98,13 @@ export interface paths {
      *
      *     Automatically commits the change and returns the repo info with the updated head.
      */
-    delete: operations["delete_file_repo__repo_id__file__file_path__delete"]
+    delete: operations['delete_file_repo__repo_id__file__file_path__delete']
     options?: never
     head?: never
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/pull": {
+  '/repo/{repo_id}/pull': {
     parameters: {
       query?: never
       header?: never
@@ -121,10 +121,10 @@ export interface paths {
      * Pull Remote
      * @remarks Pull changes from the remote repository and merge into the current branch.
      */
-    patch: operations["pull_remote_repo__repo_id__pull_patch"]
+    patch: operations['pull_remote_repo__repo_id__pull_patch']
     trace?: never
   }
-  "/repo/{repo_id}/checkout": {
+  '/repo/{repo_id}/checkout': {
     parameters: {
       query?: never
       header?: never
@@ -143,10 +143,10 @@ export interface paths {
      *
      *     Returns the repo info with the updated head.
      */
-    patch: operations["checkout_commit_repo__repo_id__checkout_patch"]
+    patch: operations['checkout_commit_repo__repo_id__checkout_patch']
     trace?: never
   }
-  "/repo/{repo_id}/site": {
+  '/repo/{repo_id}/site': {
     parameters: {
       query?: never
       header?: never
@@ -154,7 +154,7 @@ export interface paths {
       cookie?: never
     }
     /** Visit Deployed Site */
-    get: operations["visit_deployed_site_repo__repo_id__site_get"]
+    get: operations['visit_deployed_site_repo__repo_id__site_get']
     put?: never
     post?: never
     delete?: never
@@ -163,7 +163,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/agent": {
+  '/repo/{repo_id}/agent': {
     parameters: {
       query?: never
       header?: never
@@ -178,14 +178,14 @@ export interface paths {
      *
      *     Updates (e.g. agent outputs) are surfaced in real time as Server-Sent Events.
      */
-    post: operations["run_agent_repo__repo_id__agent_post"]
+    post: operations['run_agent_repo__repo_id__agent_post']
     delete?: never
     options?: never
     head?: never
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/chat": {
+  '/repo/{repo_id}/chat': {
     parameters: {
       query?: never
       header?: never
@@ -196,7 +196,7 @@ export interface paths {
      * Get Chat Log
      * @remarks Retrieve the event log for a repository, including user prompts.
      */
-    get: operations["get_chat_log_repo__repo_id__chat_get"]
+    get: operations['get_chat_log_repo__repo_id__chat_get']
     put?: never
     post?: never
     delete?: never
@@ -205,7 +205,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/retrieve": {
+  '/repo/{repo_id}/retrieve': {
     parameters: {
       query?: never
       header?: never
@@ -218,14 +218,14 @@ export interface paths {
      * Retrieve Relevant Content
      * @remarks Retrieve relevant content from a repository based on a query.
      */
-    post: operations["retrieve_relevant_content_repo__repo_id__retrieve_post"]
+    post: operations['retrieve_relevant_content_repo__repo_id__retrieve_post']
     delete?: never
     options?: never
     head?: never
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/ask": {
+  '/repo/{repo_id}/ask': {
     parameters: {
       query?: never
       header?: never
@@ -238,14 +238,14 @@ export interface paths {
      * Ask Question
      * @remarks Ask a question about the repository and receive a natural language response.
      */
-    post: operations["ask_question_repo__repo_id__ask_post"]
+    post: operations['ask_question_repo__repo_id__ask_post']
     delete?: never
     options?: never
     head?: never
     patch?: never
     trace?: never
   }
-  "/repo/{repo_id}/clone": {
+  '/repo/{repo_id}/clone': {
     parameters: {
       query?: never
       header?: never
@@ -259,7 +259,7 @@ export interface paths {
      *     If a `commit` is provided, read file contents from that commit; otherwise
      *     read from the working directory.
      */
-    get: operations["clone_repo_repo__repo_id__clone_get"]
+    get: operations['clone_repo_repo__repo_id__clone_get']
     put?: never
     post?: never
     delete?: never
@@ -285,7 +285,7 @@ export interface components {
        * Event
        * @enum {string}
        */
-      event: "start" | "pass" | "fail"
+      event: 'start' | 'pass' | 'fail'
     }
     /** CommittedEvent */
     CommittedEvent: {
@@ -315,7 +315,7 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "delete"
+      type: 'delete'
       /**
        * Filename
        * Format: path
@@ -328,7 +328,7 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "rename"
+      type: 'rename'
       /**
        * Old Filename
        * Format: path
@@ -346,7 +346,7 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "write"
+      type: 'write'
       /**
        * Filename
        * Format: path
@@ -358,12 +358,12 @@ export interface components {
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
-      detail?: components["schemas"]["ValidationError"][]
+      detail?: components['schemas']['ValidationError'][]
     }
     /** PagedResponse[RepoLogItem] */
     PagedResponse_RepoLogItem_: {
       /** Items */
-      items: components["schemas"]["RepoLogItem"][]
+      items: components['schemas']['RepoLogItem'][]
       /** Total Items */
       total_items: number
       /** Next Page */
@@ -372,7 +372,7 @@ export interface components {
     /** PagedResponse[RepoMetadata] */
     PagedResponse_RepoMetadata_: {
       /** Items */
-      items: components["schemas"]["RepoMetadata"][]
+      items: components['schemas']['RepoMetadata'][]
       /** Total Items */
       total_items: number
       /** Next Page */
@@ -417,7 +417,7 @@ export interface components {
      */
     RepoCloneResponse: {
       /** Files */
-      files?: components["schemas"]["RepoClonedFile"][]
+      files?: components['schemas']['RepoClonedFile'][]
     }
     /**
      * RepoClonedFile
@@ -435,9 +435,9 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "files"
+      type: 'files'
       /** Files */
-      files: components["schemas"]["File"][]
+      files: components['schemas']['File'][]
     }
     /** RepoCreateGitSource */
     RepoCreateGitSource: {
@@ -445,7 +445,7 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "git"
+      type: 'git'
       /**
        * Url
        * Format: uri
@@ -478,8 +478,8 @@ export interface components {
       /** Source */
       source?:
         | (
-            | components["schemas"]["RepoCreateGitSource"]
-            | components["schemas"]["RepoCreateFilesSource"]
+            | components['schemas']['RepoCreateGitSource']
+            | components['schemas']['RepoCreateFilesSource']
           )
         | null
       /** Metadata */
@@ -509,28 +509,28 @@ export interface components {
        * @enum {string}
        */
       event_type:
-        | "user_prompt"
-        | "prompt_error"
-        | "started"
-        | "agent"
-        | "tool"
-        | "committed"
-        | "build"
-        | "test"
-        | "deployed"
-        | "done"
+        | 'user_prompt'
+        | 'prompt_error'
+        | 'started'
+        | 'agent'
+        | 'tool'
+        | 'committed'
+        | 'build'
+        | 'test'
+        | 'deployed'
+        | 'done'
       /** Event */
       event:
-        | components["schemas"]["RepoAgentRequest"]
-        | components["schemas"]["PromptErrorEvent"]
-        | components["schemas"]["StartedEvent"]
-        | components["schemas"]["AgentEvent"]
-        | components["schemas"]["ToolEvent"]
-        | components["schemas"]["CommittedEvent"]
-        | components["schemas"]["BuildEvent"]
-        | components["schemas"]["TestEvent"]
-        | components["schemas"]["DeployedEvent"]
-        | components["schemas"]["DoneEvent"]
+        | components['schemas']['RepoAgentRequest']
+        | components['schemas']['PromptErrorEvent']
+        | components['schemas']['StartedEvent']
+        | components['schemas']['AgentEvent']
+        | components['schemas']['ToolEvent']
+        | components['schemas']['CommittedEvent']
+        | components['schemas']['BuildEvent']
+        | components['schemas']['TestEvent']
+        | components['schemas']['DeployedEvent']
+        | components['schemas']['DoneEvent']
     }
     /** RepoMetadata */
     RepoMetadata: {
@@ -581,7 +581,7 @@ export interface components {
     /** RepoRetrieveResponse */
     RepoRetrieveResponse: {
       /** Results */
-      results: components["schemas"]["RepoRetrieveResult"][]
+      results: components['schemas']['RepoRetrieveResult'][]
     }
     /** RepoRetrieveResult */
     RepoRetrieveResult: {
@@ -598,12 +598,12 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "diff"
+      type: 'diff'
       /** Operations */
       operations: (
-        | components["schemas"]["FileWriteOperation"]
-        | components["schemas"]["FileDeleteOperation"]
-        | components["schemas"]["FileRenameOperation"]
+        | components['schemas']['FileWriteOperation']
+        | components['schemas']['FileDeleteOperation']
+        | components['schemas']['FileRenameOperation']
       )[]
     }
     /** RepoUpdateFiles */
@@ -612,9 +612,9 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "files"
+      type: 'files'
       /** Files */
-      files: components["schemas"]["File"][]
+      files: components['schemas']['File'][]
     }
     /** RepoUpdateGit */
     RepoUpdateGit: {
@@ -622,7 +622,7 @@ export interface components {
        * @remarks discriminator enum property added by openapi-typescript
        * @enum {string}
        */
-      type: "git"
+      type: 'git'
       /**
        * Url
        * Format: uri
@@ -635,9 +635,9 @@ export interface components {
     RepoUpdateRequest: {
       /** Source */
       source:
-        | components["schemas"]["RepoUpdateFiles"]
-        | components["schemas"]["RepoUpdateDiff"]
-        | components["schemas"]["RepoUpdateGit"]
+        | components['schemas']['RepoUpdateFiles']
+        | components['schemas']['RepoUpdateDiff']
+        | components['schemas']['RepoUpdateGit']
     }
     /** StartedEvent */
     StartedEvent: {
@@ -653,7 +653,7 @@ export interface components {
        * Event
        * @enum {string}
        */
-      event: "start" | "pass" | "fail"
+      event: 'start' | 'pass' | 'fail'
     }
     /** ToolEvent */
     ToolEvent: {
@@ -686,7 +686,7 @@ export interface operations {
         filter_metadata?: string | null
         created_after?: string | null
         created_before?: string | null
-        order_by?: "created_at" | "updated_at"
+        order_by?: 'created_at' | 'updated_at'
         order_descending?: boolean
         page_start?: number
         page_size?: number
@@ -703,7 +703,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["PagedResponse_RepoMetadata_"]
+          'application/json': components['schemas']['PagedResponse_RepoMetadata_']
         }
       }
       /** @remarks Validation Error */
@@ -712,7 +712,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -726,9 +726,9 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json":
-          | components["schemas"]["RepoCreateRequest"]
-          | components["schemas"]["RepoCreateLegacyRequest"]
+        'application/json':
+          | components['schemas']['RepoCreateRequest']
+          | components['schemas']['RepoCreateLegacyRequest']
       }
     }
     responses: {
@@ -738,7 +738,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoInfo"]
+          'application/json': components['schemas']['RepoInfo']
         }
       }
       /** @remarks Validation Error */
@@ -747,7 +747,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -769,7 +769,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoMetadata"]
+          'application/json': components['schemas']['RepoMetadata']
         }
       }
       /** @remarks Validation Error */
@@ -778,7 +778,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -807,7 +807,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -823,7 +823,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RepoUpdateRequest"]
+        'application/json': components['schemas']['RepoUpdateRequest']
       }
     }
     responses: {
@@ -833,7 +833,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoInfo"]
+          'application/json': components['schemas']['RepoInfo']
         }
       }
       /** @remarks Validation Error */
@@ -842,7 +842,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -865,7 +865,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": unknown
+          'application/json': unknown
         }
       }
       /** @remarks Validation Error */
@@ -874,7 +874,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -891,7 +891,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/octet-stream": string
+        'application/octet-stream': string
       }
     }
     responses: {
@@ -901,7 +901,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoInfo"]
+          'application/json': components['schemas']['RepoInfo']
         }
       }
       /** @remarks Created */
@@ -910,7 +910,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoInfo"]
+          'application/json': components['schemas']['RepoInfo']
         }
       }
       /** @remarks Validation Error */
@@ -919,7 +919,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -942,7 +942,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoInfo"]
+          'application/json': components['schemas']['RepoInfo']
         }
       }
       /** @remarks Validation Error */
@@ -951,7 +951,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -967,7 +967,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RepoPullRequest"]
+        'application/json': components['schemas']['RepoPullRequest']
       }
     }
     responses: {
@@ -977,7 +977,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoInfo"]
+          'application/json': components['schemas']['RepoInfo']
         }
       }
       /** @remarks Validation Error */
@@ -986,7 +986,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -1002,7 +1002,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RepoCheckoutRequest"]
+        'application/json': components['schemas']['RepoCheckoutRequest']
       }
     }
     responses: {
@@ -1012,7 +1012,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoInfo"]
+          'application/json': components['schemas']['RepoInfo']
         }
       }
       /** @remarks Validation Error */
@@ -1021,7 +1021,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -1043,7 +1043,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": unknown
+          'application/json': unknown
         }
       }
       /** @remarks Validation Error */
@@ -1052,7 +1052,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -1068,7 +1068,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RepoAgentRequest"]
+        'application/json': components['schemas']['RepoAgentRequest']
       }
     }
     responses: {
@@ -1078,7 +1078,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": unknown
+          'application/json': unknown
         }
       }
       /** @remarks Validation Error */
@@ -1087,7 +1087,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -1116,7 +1116,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["PagedResponse_RepoLogItem_"]
+          'application/json': components['schemas']['PagedResponse_RepoLogItem_']
         }
       }
       /** @remarks Validation Error */
@@ -1125,7 +1125,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -1141,7 +1141,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RepoRetrieveRequest"]
+        'application/json': components['schemas']['RepoRetrieveRequest']
       }
     }
     responses: {
@@ -1151,7 +1151,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoRetrieveResponse"]
+          'application/json': components['schemas']['RepoRetrieveResponse']
         }
       }
       /** @remarks Validation Error */
@@ -1160,7 +1160,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -1176,7 +1176,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RepoAskRequest"]
+        'application/json': components['schemas']['RepoAskRequest']
       }
     }
     responses: {
@@ -1186,7 +1186,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoAskResponse"]
+          'application/json': components['schemas']['RepoAskResponse']
         }
       }
       /** @remarks Validation Error */
@@ -1195,7 +1195,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
@@ -1220,7 +1220,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["RepoCloneResponse"]
+          'application/json': components['schemas']['RepoCloneResponse']
         }
       }
       /** @remarks Validation Error */
@@ -1229,7 +1229,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"]
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }

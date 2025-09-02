@@ -42,7 +42,7 @@ const client = createRelaceClient({ apiKey: import.meta.env.RELACE_API_KEY })
     })
     console.log(
       'Retrieve results:',
-      retrieval?.results.map((r) => ({ file: r.filename, score: r.score }))
+      retrieval?.results.map((r) => ({ file: r.filename, score: r.score })),
     )
   } catch (e) {
     console.error(e)

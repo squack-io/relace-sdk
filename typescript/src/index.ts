@@ -1,5 +1,5 @@
-import type { paths } from "./relace.schema"
-import createFetchClient from "openapi-fetch"
+import type { paths } from './relace.schema'
+import createFetchClient from 'openapi-fetch'
 
 export interface RelaceApiClientConfig {
   baseUrl?: string
@@ -15,7 +15,7 @@ export interface RelaceApiClientConfig {
  * - Allows custom fetch implementation (Node, polyfills, etc.)
  */
 export const createRelaceClient = ({
-  baseUrl = "https://api.relace.run/v1/",
+  baseUrl = 'https://api.relace.run/v1/',
   apiKey,
   fetch = globalThis.fetch,
   headers,
@@ -32,6 +32,6 @@ export const createRelaceClient = ({
 export default createRelaceClient
 
 // Re-export generated schema types for convenience
-export type { paths as RelacePaths } from "./relace.schema"
-export type { components as RelaceComponents } from "./relace.schema"
-export type { operations as RelaceOperations } from "./relace.schema"
+export type { paths as RelacePaths } from './relace.schema'
+export type { components as RelaceComponents } from './relace.schema'
+export type { operations as RelaceOperations } from './relace.schema'
