@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, cast
 from uuid import UUID
 
 import httpx
@@ -14,8 +14,8 @@ def _get_kwargs(
     repo_id: UUID,
 ) -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
-        "method": "get",
-        "url": f"/repo/{repo_id}/site",
+        "method": "delete",
+        "url": f"/repo/{repo_id}",
     }
 
     return _kwargs
@@ -24,13 +24,15 @@ def _get_kwargs(
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    if response.status_code == 200:
-        response_200 = response.json()
-        return response_200
+    if response.status_code == 204:
+        response_204 = cast(Any, None)
+        return response_204
+
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
         return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -53,7 +55,9 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Visit Deployed Site
+    """Delete Repo
+
+     Delete a repository and its associated data.
 
     Args:
         repo_id (UUID):
@@ -82,7 +86,9 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Visit Deployed Site
+    """Delete Repo
+
+     Delete a repository and its associated data.
 
     Args:
         repo_id (UUID):
@@ -106,7 +112,9 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Visit Deployed Site
+    """Delete Repo
+
+     Delete a repository and its associated data.
 
     Args:
         repo_id (UUID):
@@ -133,7 +141,9 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Visit Deployed Site
+    """Delete Repo
+
+     Delete a repository and its associated data.
 
     Args:
         repo_id (UUID):

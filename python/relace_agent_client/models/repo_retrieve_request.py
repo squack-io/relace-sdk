@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union, cast
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -14,33 +14,29 @@ class RepoRetrieveRequest:
     """
     Attributes:
         query (str):
-        filter_ (Union[None, Unset, str]):
         include_content (Union[Unset, bool]):  Default: False.
+        token_limit (Union[Unset, int]):  Default: 32000.
         score_threshold (Union[Unset, float]):  Default: 0.3.
-        token_limit (Union[Unset, int]):  Default: 30000.
+        rerank (Union[Unset, bool]):  Default: True.
     """
 
     query: str
-    filter_: Union[None, Unset, str] = UNSET
     include_content: Union[Unset, bool] = False
+    token_limit: Union[Unset, int] = 32000
     score_threshold: Union[Unset, float] = 0.3
-    token_limit: Union[Unset, int] = 30000
+    rerank: Union[Unset, bool] = True
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         query = self.query
 
-        filter_: Union[None, Unset, str]
-        if isinstance(self.filter_, Unset):
-            filter_ = UNSET
-        else:
-            filter_ = self.filter_
-
         include_content = self.include_content
+
+        token_limit = self.token_limit
 
         score_threshold = self.score_threshold
 
-        token_limit = self.token_limit
+        rerank = self.rerank
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -49,14 +45,14 @@ class RepoRetrieveRequest:
                 "query": query,
             }
         )
-        if filter_ is not UNSET:
-            field_dict["filter"] = filter_
         if include_content is not UNSET:
             field_dict["include_content"] = include_content
-        if score_threshold is not UNSET:
-            field_dict["score_threshold"] = score_threshold
         if token_limit is not UNSET:
             field_dict["token_limit"] = token_limit
+        if score_threshold is not UNSET:
+            field_dict["score_threshold"] = score_threshold
+        if rerank is not UNSET:
+            field_dict["rerank"] = rerank
 
         return field_dict
 
@@ -65,27 +61,20 @@ class RepoRetrieveRequest:
         d = dict(src_dict)
         query = d.pop("query")
 
-        def _parse_filter_(data: object) -> Union[None, Unset, str]:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(Union[None, Unset, str], data)
-
-        filter_ = _parse_filter_(d.pop("filter", UNSET))
-
         include_content = d.pop("include_content", UNSET)
-
-        score_threshold = d.pop("score_threshold", UNSET)
 
         token_limit = d.pop("token_limit", UNSET)
 
+        score_threshold = d.pop("score_threshold", UNSET)
+
+        rerank = d.pop("rerank", UNSET)
+
         repo_retrieve_request = cls(
             query=query,
-            filter_=filter_,
             include_content=include_content,
-            score_threshold=score_threshold,
             token_limit=token_limit,
+            score_threshold=score_threshold,
+            rerank=rerank,
         )
 
         repo_retrieve_request.additional_properties = d

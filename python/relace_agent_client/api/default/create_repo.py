@@ -1,30 +1,33 @@
 from http import HTTPStatus
 from typing import Any, Optional, Union
-from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
+from ...models.repo_create_legacy_request import RepoCreateLegacyRequest
+from ...models.repo_create_request import RepoCreateRequest
 from ...models.repo_info import RepoInfo
-from ...models.repo_pull_request import RepoPullRequest
 from ...types import Response
 
 
 def _get_kwargs(
-    repo_id: UUID,
     *,
-    body: RepoPullRequest,
+    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
     _kwargs: dict[str, Any] = {
-        "method": "patch",
-        "url": f"/repo/{repo_id}/pull",
+        "method": "post",
+        "url": "/repo",
     }
 
-    _kwargs["json"] = body.to_dict()
+    _kwargs["json"]: dict[str, Any]
+    if isinstance(body, RepoCreateRequest):
+        _kwargs["json"] = body.to_dict()
+    else:
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -39,10 +42,12 @@ def _parse_response(
         response_200 = RepoInfo.from_dict(response.json())
 
         return response_200
+
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
         return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -61,18 +66,16 @@ def _build_response(
 
 
 def sync_detailed(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: RepoPullRequest,
+    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
 ) -> Response[Union[HTTPValidationError, RepoInfo]]:
-    """Pull Remote
+    """Create Repo
 
-     Pull changes from the remote repository and merge into the current branch.
+     Create a new repository from the provided template.
 
     Args:
-        repo_id (UUID):
-        body (RepoPullRequest):
+        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -83,7 +86,6 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        repo_id=repo_id,
         body=body,
     )
 
@@ -95,18 +97,16 @@ def sync_detailed(
 
 
 def sync(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: RepoPullRequest,
+    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
 ) -> Optional[Union[HTTPValidationError, RepoInfo]]:
-    """Pull Remote
+    """Create Repo
 
-     Pull changes from the remote repository and merge into the current branch.
+     Create a new repository from the provided template.
 
     Args:
-        repo_id (UUID):
-        body (RepoPullRequest):
+        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -117,25 +117,22 @@ def sync(
     """
 
     return sync_detailed(
-        repo_id=repo_id,
         client=client,
         body=body,
     ).parsed
 
 
 async def asyncio_detailed(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: RepoPullRequest,
+    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
 ) -> Response[Union[HTTPValidationError, RepoInfo]]:
-    """Pull Remote
+    """Create Repo
 
-     Pull changes from the remote repository and merge into the current branch.
+     Create a new repository from the provided template.
 
     Args:
-        repo_id (UUID):
-        body (RepoPullRequest):
+        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -146,7 +143,6 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        repo_id=repo_id,
         body=body,
     )
 
@@ -156,18 +152,16 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: RepoPullRequest,
+    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
 ) -> Optional[Union[HTTPValidationError, RepoInfo]]:
-    """Pull Remote
+    """Create Repo
 
-     Pull changes from the remote repository and merge into the current branch.
+     Create a new repository from the provided template.
 
     Args:
-        repo_id (UUID):
-        body (RepoPullRequest):
+        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -179,7 +173,6 @@ async def asyncio(
 
     return (
         await asyncio_detailed(
-            repo_id=repo_id,
             client=client,
             body=body,
         )

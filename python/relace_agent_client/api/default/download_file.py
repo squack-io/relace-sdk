@@ -7,16 +7,16 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.repo_metadata import RepoMetadata
 from ...types import Response
 
 
 def _get_kwargs(
     repo_id: UUID,
+    file_path: str,
 ) -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": f"/repo/{repo_id}",
+        "url": f"/repo/{repo_id}/file/{file_path}",
     }
 
     return _kwargs
@@ -24,15 +24,16 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[HTTPValidationError, RepoMetadata]]:
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == 200:
-        response_200 = RepoMetadata.from_dict(response.json())
-
+        response_200 = response.json()
         return response_200
+
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
         return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -41,7 +42,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[HTTPValidationError, RepoMetadata]]:
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -52,26 +53,29 @@ def _build_response(
 
 def sync_detailed(
     repo_id: UUID,
+    file_path: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[HTTPValidationError, RepoMetadata]]:
-    """Get Repo Metadata
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Download File
 
-     Get metadata for a single repository.
+     Read a file from a repository.
 
     Args:
         repo_id (UUID):
+        file_path (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, RepoMetadata]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
         repo_id=repo_id,
+        file_path=file_path,
     )
 
     response = client.get_httpx_client().request(
@@ -83,52 +87,58 @@ def sync_detailed(
 
 def sync(
     repo_id: UUID,
+    file_path: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[HTTPValidationError, RepoMetadata]]:
-    """Get Repo Metadata
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Download File
 
-     Get metadata for a single repository.
+     Read a file from a repository.
 
     Args:
         repo_id (UUID):
+        file_path (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, RepoMetadata]
+        Union[Any, HTTPValidationError]
     """
 
     return sync_detailed(
         repo_id=repo_id,
+        file_path=file_path,
         client=client,
     ).parsed
 
 
 async def asyncio_detailed(
     repo_id: UUID,
+    file_path: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Union[HTTPValidationError, RepoMetadata]]:
-    """Get Repo Metadata
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Download File
 
-     Get metadata for a single repository.
+     Read a file from a repository.
 
     Args:
         repo_id (UUID):
+        file_path (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, RepoMetadata]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
         repo_id=repo_id,
+        file_path=file_path,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -138,27 +148,30 @@ async def asyncio_detailed(
 
 async def asyncio(
     repo_id: UUID,
+    file_path: str,
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[HTTPValidationError, RepoMetadata]]:
-    """Get Repo Metadata
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Download File
 
-     Get metadata for a single repository.
+     Read a file from a repository.
 
     Args:
         repo_id (UUID):
+        file_path (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, RepoMetadata]
+        Union[Any, HTTPValidationError]
     """
 
     return (
         await asyncio_detailed(
             repo_id=repo_id,
+            file_path=file_path,
             client=client,
         )
     ).parsed

@@ -31,7 +31,7 @@ const client = createRelaceClient({ apiKey: import.meta.env.RELACE_API_KEY })
       '/repo/{repo_id}/file/{file_path}',
       {
         params: { path: { repo_id, file_path } },
-      }
+      },
     )
     console.log('Downloaded content:', fileContent)
 

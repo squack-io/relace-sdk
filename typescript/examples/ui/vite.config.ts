@@ -12,7 +12,7 @@ export default defineConfig(() => {
       // Inject envs into window for the UI script to read
       'window.RELACE_API_KEY': JSON.stringify(process.env.RELACE_API_KEY || ''),
       'window.RELACE_BASE_URL': JSON.stringify(
-        process.env.RELACE_BASE_URL || 'https://api.relace.run/v1/'
+        process.env.RELACE_BASE_URL || 'https://api.relace.run/v1/',
       ),
     },
   }

@@ -9,6 +9,7 @@ from ..types import UNSET, Unset
 if TYPE_CHECKING:
     from ..models.repo_create_files_source import RepoCreateFilesSource
     from ..models.repo_create_git_source import RepoCreateGitSource
+    from ..models.repo_create_relace_source import RepoCreateRelaceSource
     from ..models.repo_create_request_metadata_type_0 import RepoCreateRequestMetadataType0
 
 
@@ -19,17 +20,18 @@ T = TypeVar("T", bound="RepoCreateRequest")
 class RepoCreateRequest:
     """
     Attributes:
-        source (Union['RepoCreateFilesSource', 'RepoCreateGitSource', None, Unset]):
+        source (Union['RepoCreateFilesSource', 'RepoCreateGitSource', 'RepoCreateRelaceSource', None, Unset]):
         metadata (Union['RepoCreateRequestMetadataType0', None, Unset]):
     """
 
-    source: Union["RepoCreateFilesSource", "RepoCreateGitSource", None, Unset] = UNSET
+    source: Union["RepoCreateFilesSource", "RepoCreateGitSource", "RepoCreateRelaceSource", None, Unset] = UNSET
     metadata: Union["RepoCreateRequestMetadataType0", None, Unset] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.repo_create_files_source import RepoCreateFilesSource
         from ..models.repo_create_git_source import RepoCreateGitSource
+        from ..models.repo_create_relace_source import RepoCreateRelaceSource
         from ..models.repo_create_request_metadata_type_0 import RepoCreateRequestMetadataType0
 
         source: Union[None, Unset, dict[str, Any]]
@@ -38,6 +40,8 @@ class RepoCreateRequest:
         elif isinstance(self.source, RepoCreateGitSource):
             source = self.source.to_dict()
         elif isinstance(self.source, RepoCreateFilesSource):
+            source = self.source.to_dict()
+        elif isinstance(self.source, RepoCreateRelaceSource):
             source = self.source.to_dict()
         else:
             source = self.source
@@ -64,11 +68,14 @@ class RepoCreateRequest:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.repo_create_files_source import RepoCreateFilesSource
         from ..models.repo_create_git_source import RepoCreateGitSource
+        from ..models.repo_create_relace_source import RepoCreateRelaceSource
         from ..models.repo_create_request_metadata_type_0 import RepoCreateRequestMetadataType0
 
         d = dict(src_dict)
 
-        def _parse_source(data: object) -> Union["RepoCreateFilesSource", "RepoCreateGitSource", None, Unset]:
+        def _parse_source(
+            data: object,
+        ) -> Union["RepoCreateFilesSource", "RepoCreateGitSource", "RepoCreateRelaceSource", None, Unset]:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -89,7 +96,17 @@ class RepoCreateRequest:
                 return source_type_0_type_1
             except:  # noqa: E722
                 pass
-            return cast(Union["RepoCreateFilesSource", "RepoCreateGitSource", None, Unset], data)
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                source_type_0_type_2 = RepoCreateRelaceSource.from_dict(data)
+
+                return source_type_0_type_2
+            except:  # noqa: E722
+                pass
+            return cast(
+                Union["RepoCreateFilesSource", "RepoCreateGitSource", "RepoCreateRelaceSource", None, Unset], data
+            )
 
         source = _parse_source(d.pop("source", UNSET))
 

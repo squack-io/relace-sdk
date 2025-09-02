@@ -1,26 +1,35 @@
 import datetime
 from http import HTTPStatus
 from typing import Any, Optional, Union
-from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.paged_response_repo_log_item import PagedResponseRepoLogItem
+from ...models.list_repo_metadata_order_by import ListRepoMetadataOrderBy
+from ...models.paged_response_repo_metadata import PagedResponseRepoMetadata
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
-    repo_id: UUID,
     *,
+    filter_metadata: Union[None, Unset, str] = UNSET,
     created_after: Union[None, Unset, datetime.datetime] = UNSET,
     created_before: Union[None, Unset, datetime.datetime] = UNSET,
+    order_by: Union[Unset, ListRepoMetadataOrderBy] = ListRepoMetadataOrderBy.CREATED_AT,
+    order_descending: Union[Unset, bool] = False,
     page_start: Union[Unset, int] = 0,
     page_size: Union[Unset, int] = 100,
 ) -> dict[str, Any]:
     params: dict[str, Any] = {}
+
+    json_filter_metadata: Union[None, Unset, str]
+    if isinstance(filter_metadata, Unset):
+        json_filter_metadata = UNSET
+    else:
+        json_filter_metadata = filter_metadata
+    params["filter_metadata"] = json_filter_metadata
 
     json_created_after: Union[None, Unset, str]
     if isinstance(created_after, Unset):
@@ -40,6 +49,14 @@ def _get_kwargs(
         json_created_before = created_before
     params["created_before"] = json_created_before
 
+    json_order_by: Union[Unset, str] = UNSET
+    if not isinstance(order_by, Unset):
+        json_order_by = order_by.value
+
+    params["order_by"] = json_order_by
+
+    params["order_descending"] = order_descending
+
     params["page_start"] = page_start
 
     params["page_size"] = page_size
@@ -48,7 +65,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": f"/repo/{repo_id}/chat",
+        "url": "/repo",
         "params": params,
     }
 
@@ -57,15 +74,17 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[HTTPValidationError, PagedResponseRepoLogItem]]:
+) -> Optional[Union[HTTPValidationError, PagedResponseRepoMetadata]]:
     if response.status_code == 200:
-        response_200 = PagedResponseRepoLogItem.from_dict(response.json())
+        response_200 = PagedResponseRepoMetadata.from_dict(response.json())
 
         return response_200
+
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
         return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -74,7 +93,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[HTTPValidationError, PagedResponseRepoLogItem]]:
+) -> Response[Union[HTTPValidationError, PagedResponseRepoMetadata]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -84,37 +103,44 @@ def _build_response(
 
 
 def sync_detailed(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
+    filter_metadata: Union[None, Unset, str] = UNSET,
     created_after: Union[None, Unset, datetime.datetime] = UNSET,
     created_before: Union[None, Unset, datetime.datetime] = UNSET,
+    order_by: Union[Unset, ListRepoMetadataOrderBy] = ListRepoMetadataOrderBy.CREATED_AT,
+    order_descending: Union[Unset, bool] = False,
     page_start: Union[Unset, int] = 0,
     page_size: Union[Unset, int] = 100,
-) -> Response[Union[HTTPValidationError, PagedResponseRepoLogItem]]:
-    """Get Chat Log
+) -> Response[Union[HTTPValidationError, PagedResponseRepoMetadata]]:
+    """List Repo Metadata
 
-     Retrieve the event log for a repository, including user prompts.
+     Get metadata for all repositories owned by the user.
 
     Args:
-        repo_id (UUID):
+        filter_metadata (Union[None, Unset, str]):
         created_after (Union[None, Unset, datetime.datetime]):
         created_before (Union[None, Unset, datetime.datetime]):
-        page_start (Union[Unset, int]): Page start index Default: 0.
-        page_size (Union[Unset, int]): Maximum results per page Default: 100.
+        order_by (Union[Unset, ListRepoMetadataOrderBy]):  Default:
+            ListRepoMetadataOrderBy.CREATED_AT.
+        order_descending (Union[Unset, bool]):  Default: False.
+        page_start (Union[Unset, int]):  Default: 0.
+        page_size (Union[Unset, int]):  Default: 100.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, PagedResponseRepoLogItem]]
+        Response[Union[HTTPValidationError, PagedResponseRepoMetadata]]
     """
 
     kwargs = _get_kwargs(
-        repo_id=repo_id,
+        filter_metadata=filter_metadata,
         created_after=created_after,
         created_before=created_before,
+        order_by=order_by,
+        order_descending=order_descending,
         page_start=page_start,
         page_size=page_size,
     )
@@ -127,75 +153,89 @@ def sync_detailed(
 
 
 def sync(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
+    filter_metadata: Union[None, Unset, str] = UNSET,
     created_after: Union[None, Unset, datetime.datetime] = UNSET,
     created_before: Union[None, Unset, datetime.datetime] = UNSET,
+    order_by: Union[Unset, ListRepoMetadataOrderBy] = ListRepoMetadataOrderBy.CREATED_AT,
+    order_descending: Union[Unset, bool] = False,
     page_start: Union[Unset, int] = 0,
     page_size: Union[Unset, int] = 100,
-) -> Optional[Union[HTTPValidationError, PagedResponseRepoLogItem]]:
-    """Get Chat Log
+) -> Optional[Union[HTTPValidationError, PagedResponseRepoMetadata]]:
+    """List Repo Metadata
 
-     Retrieve the event log for a repository, including user prompts.
+     Get metadata for all repositories owned by the user.
 
     Args:
-        repo_id (UUID):
+        filter_metadata (Union[None, Unset, str]):
         created_after (Union[None, Unset, datetime.datetime]):
         created_before (Union[None, Unset, datetime.datetime]):
-        page_start (Union[Unset, int]): Page start index Default: 0.
-        page_size (Union[Unset, int]): Maximum results per page Default: 100.
+        order_by (Union[Unset, ListRepoMetadataOrderBy]):  Default:
+            ListRepoMetadataOrderBy.CREATED_AT.
+        order_descending (Union[Unset, bool]):  Default: False.
+        page_start (Union[Unset, int]):  Default: 0.
+        page_size (Union[Unset, int]):  Default: 100.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, PagedResponseRepoLogItem]
+        Union[HTTPValidationError, PagedResponseRepoMetadata]
     """
 
     return sync_detailed(
-        repo_id=repo_id,
         client=client,
+        filter_metadata=filter_metadata,
         created_after=created_after,
         created_before=created_before,
+        order_by=order_by,
+        order_descending=order_descending,
         page_start=page_start,
         page_size=page_size,
     ).parsed
 
 
 async def asyncio_detailed(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
+    filter_metadata: Union[None, Unset, str] = UNSET,
     created_after: Union[None, Unset, datetime.datetime] = UNSET,
     created_before: Union[None, Unset, datetime.datetime] = UNSET,
+    order_by: Union[Unset, ListRepoMetadataOrderBy] = ListRepoMetadataOrderBy.CREATED_AT,
+    order_descending: Union[Unset, bool] = False,
     page_start: Union[Unset, int] = 0,
     page_size: Union[Unset, int] = 100,
-) -> Response[Union[HTTPValidationError, PagedResponseRepoLogItem]]:
-    """Get Chat Log
+) -> Response[Union[HTTPValidationError, PagedResponseRepoMetadata]]:
+    """List Repo Metadata
 
-     Retrieve the event log for a repository, including user prompts.
+     Get metadata for all repositories owned by the user.
 
     Args:
-        repo_id (UUID):
+        filter_metadata (Union[None, Unset, str]):
         created_after (Union[None, Unset, datetime.datetime]):
         created_before (Union[None, Unset, datetime.datetime]):
-        page_start (Union[Unset, int]): Page start index Default: 0.
-        page_size (Union[Unset, int]): Maximum results per page Default: 100.
+        order_by (Union[Unset, ListRepoMetadataOrderBy]):  Default:
+            ListRepoMetadataOrderBy.CREATED_AT.
+        order_descending (Union[Unset, bool]):  Default: False.
+        page_start (Union[Unset, int]):  Default: 0.
+        page_size (Union[Unset, int]):  Default: 100.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, PagedResponseRepoLogItem]]
+        Response[Union[HTTPValidationError, PagedResponseRepoMetadata]]
     """
 
     kwargs = _get_kwargs(
-        repo_id=repo_id,
+        filter_metadata=filter_metadata,
         created_after=created_after,
         created_before=created_before,
+        order_by=order_by,
+        order_descending=order_descending,
         page_start=page_start,
         page_size=page_size,
     )
@@ -206,39 +246,46 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    repo_id: UUID,
     *,
     client: AuthenticatedClient,
+    filter_metadata: Union[None, Unset, str] = UNSET,
     created_after: Union[None, Unset, datetime.datetime] = UNSET,
     created_before: Union[None, Unset, datetime.datetime] = UNSET,
+    order_by: Union[Unset, ListRepoMetadataOrderBy] = ListRepoMetadataOrderBy.CREATED_AT,
+    order_descending: Union[Unset, bool] = False,
     page_start: Union[Unset, int] = 0,
     page_size: Union[Unset, int] = 100,
-) -> Optional[Union[HTTPValidationError, PagedResponseRepoLogItem]]:
-    """Get Chat Log
+) -> Optional[Union[HTTPValidationError, PagedResponseRepoMetadata]]:
+    """List Repo Metadata
 
-     Retrieve the event log for a repository, including user prompts.
+     Get metadata for all repositories owned by the user.
 
     Args:
-        repo_id (UUID):
+        filter_metadata (Union[None, Unset, str]):
         created_after (Union[None, Unset, datetime.datetime]):
         created_before (Union[None, Unset, datetime.datetime]):
-        page_start (Union[Unset, int]): Page start index Default: 0.
-        page_size (Union[Unset, int]): Maximum results per page Default: 100.
+        order_by (Union[Unset, ListRepoMetadataOrderBy]):  Default:
+            ListRepoMetadataOrderBy.CREATED_AT.
+        order_descending (Union[Unset, bool]):  Default: False.
+        page_start (Union[Unset, int]):  Default: 0.
+        page_size (Union[Unset, int]):  Default: 100.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, PagedResponseRepoLogItem]
+        Union[HTTPValidationError, PagedResponseRepoMetadata]
     """
 
     return (
         await asyncio_detailed(
-            repo_id=repo_id,
             client=client,
+            filter_metadata=filter_metadata,
             created_after=created_after,
             created_before=created_before,
+            order_by=order_by,
+            order_descending=order_descending,
             page_start=page_start,
             page_size=page_size,
         )

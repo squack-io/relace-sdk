@@ -1,51 +1,54 @@
 from http import HTTPStatus
 from typing import Any, Optional, Union
+from uuid import UUID
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.repo_create_legacy_request import RepoCreateLegacyRequest
-from ...models.repo_create_request import RepoCreateRequest
-from ...models.repo_info import RepoInfo
-from ...types import Response
+from ...models.repo_clone_response import RepoCloneResponse
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
+    repo_id: UUID,
     *,
-    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
+    commit: Union[None, Unset, str] = UNSET,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
+    params: dict[str, Any] = {}
+
+    json_commit: Union[None, Unset, str]
+    if isinstance(commit, Unset):
+        json_commit = UNSET
+    else:
+        json_commit = commit
+    params["commit"] = json_commit
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     _kwargs: dict[str, Any] = {
-        "method": "post",
-        "url": "/repo",
+        "method": "get",
+        "url": f"/repo/{repo_id}/clone",
+        "params": params,
     }
 
-    _kwargs["json"]: dict[str, Any]
-    if isinstance(body, RepoCreateRequest):
-        _kwargs["json"] = body.to_dict()
-    else:
-        _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[HTTPValidationError, RepoInfo]]:
+) -> Optional[Union[HTTPValidationError, RepoCloneResponse]]:
     if response.status_code == 200:
-        response_200 = RepoInfo.from_dict(response.json())
+        response_200 = RepoCloneResponse.from_dict(response.json())
 
         return response_200
+
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
         return response_422
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -54,7 +57,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[HTTPValidationError, RepoInfo]]:
+) -> Response[Union[HTTPValidationError, RepoCloneResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,27 +67,33 @@ def _build_response(
 
 
 def sync_detailed(
+    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
-) -> Response[Union[HTTPValidationError, RepoInfo]]:
-    """Create Repo
+    commit: Union[None, Unset, str] = UNSET,
+) -> Response[Union[HTTPValidationError, RepoCloneResponse]]:
+    """Clone Repo
 
-     Create a new repository from the provided template.
+     Return all readable tracked files in a repository.
+
+    If a `commit` is provided, read file contents from that commit; otherwise
+    read from the working directory.
 
     Args:
-        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
+        repo_id (UUID):
+        commit (Union[None, Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, RepoInfo]]
+        Response[Union[HTTPValidationError, RepoCloneResponse]]
     """
 
     kwargs = _get_kwargs(
-        body=body,
+        repo_id=repo_id,
+        commit=commit,
     )
 
     response = client.get_httpx_client().request(
@@ -95,53 +104,65 @@ def sync_detailed(
 
 
 def sync(
+    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
-) -> Optional[Union[HTTPValidationError, RepoInfo]]:
-    """Create Repo
+    commit: Union[None, Unset, str] = UNSET,
+) -> Optional[Union[HTTPValidationError, RepoCloneResponse]]:
+    """Clone Repo
 
-     Create a new repository from the provided template.
+     Return all readable tracked files in a repository.
+
+    If a `commit` is provided, read file contents from that commit; otherwise
+    read from the working directory.
 
     Args:
-        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
+        repo_id (UUID):
+        commit (Union[None, Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, RepoInfo]
+        Union[HTTPValidationError, RepoCloneResponse]
     """
 
     return sync_detailed(
+        repo_id=repo_id,
         client=client,
-        body=body,
+        commit=commit,
     ).parsed
 
 
 async def asyncio_detailed(
+    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
-) -> Response[Union[HTTPValidationError, RepoInfo]]:
-    """Create Repo
+    commit: Union[None, Unset, str] = UNSET,
+) -> Response[Union[HTTPValidationError, RepoCloneResponse]]:
+    """Clone Repo
 
-     Create a new repository from the provided template.
+     Return all readable tracked files in a repository.
+
+    If a `commit` is provided, read file contents from that commit; otherwise
+    read from the working directory.
 
     Args:
-        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
+        repo_id (UUID):
+        commit (Union[None, Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, RepoInfo]]
+        Response[Union[HTTPValidationError, RepoCloneResponse]]
     """
 
     kwargs = _get_kwargs(
-        body=body,
+        repo_id=repo_id,
+        commit=commit,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -150,28 +171,34 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    repo_id: UUID,
     *,
     client: AuthenticatedClient,
-    body: Union["RepoCreateLegacyRequest", "RepoCreateRequest"],
-) -> Optional[Union[HTTPValidationError, RepoInfo]]:
-    """Create Repo
+    commit: Union[None, Unset, str] = UNSET,
+) -> Optional[Union[HTTPValidationError, RepoCloneResponse]]:
+    """Clone Repo
 
-     Create a new repository from the provided template.
+     Return all readable tracked files in a repository.
+
+    If a `commit` is provided, read file contents from that commit; otherwise
+    read from the working directory.
 
     Args:
-        body (Union['RepoCreateLegacyRequest', 'RepoCreateRequest']):
+        repo_id (UUID):
+        commit (Union[None, Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, RepoInfo]
+        Union[HTTPValidationError, RepoCloneResponse]
     """
 
     return (
         await asyncio_detailed(
+            repo_id=repo_id,
             client=client,
-            body=body,
+            commit=commit,
         )
     ).parsed

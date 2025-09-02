@@ -14,13 +14,10 @@ from uuid import UUID
 
 from relace_agent_client import AuthenticatedClient
 from relace_agent_client.api.default import (
-    ask_question_repo_repo_id_ask_post,
-    retrieve_relevant_content_repo_repo_id_retrieve_post,
-    run_agent_repo_repo_id_agent_post,
+    ask_question,
+    retrieve_relevant_content,
 )
 from relace_agent_client.models import (
-    RepoAgentRequest,
-    RepoAgentRequestAgentInputs,
     RepoAskRequest,
     RepoAskResponse,
     RepoRetrieveRequest,
@@ -38,18 +35,9 @@ def get_client() -> AuthenticatedClient:
     return AuthenticatedClient(base_url=BASE_URL, token=API_KEY)
 
 
-def run_agent(repo_id: UUID) -> None:
-    inputs = RepoAgentRequestAgentInputs.from_dict({"task": "Add logging to main and write tests"})
-    with get_client() as c:
-        resp = run_agent_repo_repo_id_agent_post.sync_detailed(
-            client=c, repo_id=repo_id, body=RepoAgentRequest(agent_name="code_maintainer", agent_inputs=inputs)
-        )
-    print("Agent response:", resp.parsed)
-
-
 def ask(repo_id: UUID) -> None:
     with get_client() as c:
-        resp = ask_question_repo_repo_id_ask_post.sync_detailed(
+        resp = ask_question.sync_detailed(
             client=c, repo_id=repo_id, body=RepoAskRequest(query="Where is the entry point?")
         )
     if isinstance(resp.parsed, RepoAskResponse):
@@ -58,7 +46,7 @@ def ask(repo_id: UUID) -> None:
 
 def retrieve(repo_id: UUID) -> None:
     with get_client() as c:
-        resp = retrieve_relevant_content_repo_repo_id_retrieve_post.sync_detailed(
+        resp = retrieve_relevant_content.sync_detailed(
             client=c,
             repo_id=repo_id,
             body=RepoRetrieveRequest(query="authentication logic", include_content=True, score_threshold=0.4),
@@ -73,7 +61,6 @@ def main():
         raise SystemExit("REPO_ID env var is required")
     repo_id = UUID(REPO_ID)
 
-    run_agent(repo_id)
     ask(repo_id)
     retrieve(repo_id)
 
